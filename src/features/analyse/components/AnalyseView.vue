@@ -66,10 +66,10 @@ onMounted(async () => {
           <v-card class="pa-4">
             <h2 class="text-subtitle-1 mb-4">Produits les plus vendus</h2>
             <GrapheProduitsPopulaires
-            v-if="produits.length > 0"
-            :produits="produits"
-            :couleur-primaire="magasinStore.magasin?.couleurPrimaire ?? '#3B6B3E'"
-            :couleur-secondaire="magasinStore.magasin?.couleurSecondaire ?? '#B23A2E'"
+              v-if="produits.length > 0"
+              :produits="produits"
+              :couleur-primaire="magasinStore.magasin?.couleurPrimaire ?? '#3B6B3E'"
+              :couleur-secondaire="magasinStore.magasin?.couleurSecondaire ?? '#B23A2E'"
             />
             <p v-else class="text-body-2 text-center mt-8" style="color: var(--color-muted)">
               Aucune vente enregistrée pour l'instant

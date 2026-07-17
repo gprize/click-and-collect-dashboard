@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
 import {
   fetchCommandesMagasin,
   demarrerPreparation,
@@ -9,10 +8,11 @@ import {
 } from '@/features/commande/services/commandeService'
 import { useWebSocketTopic } from '@/shared/composables/useWebSocketTopic'
 import { useSessionStore } from '@/stores/session'
+import { useMagasinStore } from '@/stores/magasin'
 import type { CommandeResponse } from '@/features/commande/types'
 
-const router = useRouter()
 const session = useSessionStore()
+const magasinStore = useMagasinStore()
 
 const commandes = ref<CommandeResponse[]>([])
 const chargement = ref(true)
@@ -48,6 +48,15 @@ useWebSocketTopic<CommandeResponse>(`/topic/magasins/${session.magasinId}/comman
 const payees = computed(() => commandes.value.filter((c) => c.statut === 'PAYEE'))
 const enPreparation = computed(() => commandes.value.filter((c) => c.statut === 'EN_PREPARATION'))
 const pretes = computed(() => commandes.value.filter((c) => c.statut === 'PRETE'))
+
+function styleBande(statut: 'PAYEE' | 'EN_PREPARATION' | 'PRETE') {
+  const couleurs = {
+    PAYEE: '#E8A93B',
+    EN_PREPARATION: magasinStore.magasin?.couleurPrimaire ?? '#3B6B3E',
+    PRETE: magasinStore.magasin?.couleurSecondaire ?? '#B23A2E'
+  }
+  return { borderLeft: `4px solid ${couleurs[statut]}` }
+}
 
 async function handleDemarrerPreparation(id: string) {
   actionEnCours.value = id
@@ -85,31 +94,11 @@ async function handleValiderRecuperation() {
     recuperationErreur.value = 'Code invalide ou commande non prête'
   }
 }
-
-function deconnecter() {
-  session.deconnecter()
-  router.push({ name: 'login' })
-}
 </script>
 
 <template>
   <v-container class="py-8">
-    <div class="d-flex justify-space-between align-center mb-6">
-      <h1 class="text-h5" style="margin: 0;">Commandes</h1>
-      <div class="d-flex align-center" style="gap: 8px;">
-        <v-btn
-          color="primary"
-          variant="flat"
-          prepend-icon="mdi-chart-line"
-          :to="{ name: 'analyses' }"
-        >
-          Voir les analyses
-        </v-btn>
-        <v-btn variant="text" size="small" prepend-icon="mdi-logout" @click="deconnecter">
-          Déconnexion
-        </v-btn>
-      </div>
-    </div>
+    <h1 class="text-h5 mb-6">Commandes</h1>
 
     <v-card class="mb-8" variant="tonal">
       <v-card-title class="text-subtitle-1">Valider un retrait</v-card-title>
@@ -136,7 +125,7 @@ function deconnecter() {
     <v-row v-else>
       <v-col cols="12" md="4">
         <h2 class="text-subtitle-1 mb-3">Payées ({{ payees.length }})</h2>
-        <v-card v-for="commande in payees" :key="commande.id" class="mb-3">
+        <v-card v-for="commande in payees" :key="commande.id" class="mb-3" :style="styleBande('PAYEE')">
           <v-card-text>
             <div class="font-weight-medium">{{ commande.total.toLocaleString('fr-FR') }} FCFA</div>
             <div class="text-caption">{{ commande.lignes.length }} article(s)</div>
@@ -158,7 +147,7 @@ function deconnecter() {
 
       <v-col cols="12" md="4">
         <h2 class="text-subtitle-1 mb-3">En préparation ({{ enPreparation.length }})</h2>
-        <v-card v-for="commande in enPreparation" :key="commande.id" class="mb-3">
+        <v-card v-for="commande in enPreparation" :key="commande.id" class="mb-3" :style="styleBande('EN_PREPARATION')">
           <v-card-text>
             <div class="font-weight-medium">{{ commande.total.toLocaleString('fr-FR') }} FCFA</div>
             <div class="text-caption">{{ commande.lignes.length }} article(s)</div>
@@ -180,7 +169,7 @@ function deconnecter() {
 
       <v-col cols="12" md="4">
         <h2 class="text-subtitle-1 mb-3">Prêtes ({{ pretes.length }})</h2>
-        <v-card v-for="commande in pretes" :key="commande.id" class="mb-3">
+        <v-card v-for="commande in pretes" :key="commande.id" class="mb-3" :style="styleBande('PRETE')">
           <v-card-text>
             <div class="font-weight-medium">{{ commande.total.toLocaleString('fr-FR') }} FCFA</div>
             <div class="text-caption">Code : {{ commande.codeRetrait }}</div>

@@ -23,6 +23,17 @@ export function creerVuetify(couleurPrimaire: string, couleurSecondaire: string)
             success: couleurPrimaire,
             'market-amber': '#E8A93B'
           }
+        },
+        sidebar: {
+          dark: true,
+          colors: {
+            primary: couleurPrimaire,
+            secondary: couleurSecondaire,
+            background: '#232821',
+            surface: '#232821',
+            error: couleurSecondaire,
+            success: couleurPrimaire
+          }
         }
       }
     },

@@ -44,6 +44,7 @@ function deconnecter() {
         <v-list nav density="comfortable">
           <v-list-item :to="{ name: 'dashboard' }" prepend-icon="mdi-clipboard-list-outline" title="Commandes" rounded="lg" />
           <v-list-item :to="{ name: 'analyses' }" prepend-icon="mdi-chart-line" title="Analyses" rounded="lg" />
+          <v-list-item :to="{ name: 'stock' }" prepend-icon="mdi-package-variant" title="Stock" rounded="lg" />
         </v-list>
 
         <template #append>

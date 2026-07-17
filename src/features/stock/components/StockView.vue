@@ -39,6 +39,10 @@ async function handleFichier(event: Event) {
       return
     }
     const feuille = classeur.Sheets[premierNomFeuille]
+    if (!feuille) {
+      erreur.value = 'Le fichier Excel ne contient aucune feuille'
+      return
+    }
     const lignesBrutes = XLSX.utils.sheet_to_json<Record<string, unknown>>(feuille)
 
     const valides: LigneImport[] = []

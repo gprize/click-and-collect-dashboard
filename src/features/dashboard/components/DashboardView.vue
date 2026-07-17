@@ -95,10 +95,20 @@ function deconnecter() {
 <template>
   <v-container class="py-8">
     <div class="d-flex justify-space-between align-center mb-6">
-      <h1 class="text-h5" style="margin: 0;">Dashboard magasin</h1>
-      <v-btn variant="text" size="small" prepend-icon="mdi-logout" @click="deconnecter">
-        Déconnexion
-      </v-btn>
+      <h1 class="text-h5" style="margin: 0;">Commandes</h1>
+      <div class="d-flex align-center" style="gap: 8px;">
+        <v-btn
+          color="primary"
+          variant="flat"
+          prepend-icon="mdi-chart-line"
+          :to="{ name: 'analyses' }"
+        >
+          Voir les analyses
+        </v-btn>
+        <v-btn variant="text" size="small" prepend-icon="mdi-logout" @click="deconnecter">
+          Déconnexion
+        </v-btn>
+      </div>
     </div>
 
     <v-card class="mb-8" variant="tonal">

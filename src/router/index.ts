@@ -2,12 +2,14 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '@/features/auth/components/LoginView.vue'
 import DashboardView from '@/features/dashboard/components/DashboardView.vue'
 import { useSessionStore } from '@/stores/session'
+import AnalyseView from '@/features/analyse/components/AnalyseView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/login', name: 'login', component: LoginView },
-    { path: '/', name: 'dashboard', component: DashboardView }
+    { path: '/', name: 'dashboard', component: DashboardView },
+    { path: '/analyses', name: 'analyses', component: AnalyseView }
   ]
 })
 

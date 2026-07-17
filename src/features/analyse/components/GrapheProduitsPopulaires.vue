@@ -6,7 +6,15 @@ import type { ProduitVendu } from '../types'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip)
 
-const props = defineProps<{ produits: ProduitVendu[]; couleurPrimaire: string }>()
+const props = defineProps<{
+  produits: ProduitVendu[]
+  couleurPrimaire: string
+  couleurSecondaire: string
+}>()
+
+const quantiteMax = computed(() =>
+  props.produits.length > 0 ? Math.max(...props.produits.map((p) => p.quantiteVendue)) : 0
+)
 
 const chartData = computed(() => ({
   labels: props.produits.map((p) => p.nom),
@@ -14,7 +22,9 @@ const chartData = computed(() => ({
     {
       label: 'Unités vendues',
       data: props.produits.map((p) => p.quantiteVendue),
-      backgroundColor: props.couleurPrimaire,
+      backgroundColor: props.produits.map((p) =>
+        p.quantiteVendue === quantiteMax.value ? props.couleurSecondaire : props.couleurPrimaire
+      ),
       borderRadius: 6
     }
   ]

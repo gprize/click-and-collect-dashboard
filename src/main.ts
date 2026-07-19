@@ -2,6 +2,7 @@ import './assets/main.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import { registerSW } from 'virtual:pwa-register'
 import App from './App.vue'
 import router from './router'
 import { creerVuetify } from './plugins/vuetify'
@@ -25,3 +26,10 @@ async function demarrer() {
 }
 
 demarrer()
+
+registerSW({
+  immediate: true,
+  onNeedRefresh() {
+    window.location.reload()
+  }
+})

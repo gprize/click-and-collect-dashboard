@@ -24,6 +24,7 @@ export const useSessionStore = defineStore('session', () => {
   }
 
   const estConnecte = () => token.value !== null
+  const estAdmin = () => role.value === 'ADMIN_MAGASIN'
 
-  return { token, role, magasinId, definirSession, deconnecter, estConnecte }
+  return { token, role, magasinId, definirSession, deconnecter, estConnecte, estAdmin }
 })
